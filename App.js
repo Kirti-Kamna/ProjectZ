@@ -9,6 +9,8 @@ import HomeScreen from './src/screens/homeScreen';
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
+import {OrgJobProvider} from './src/context/quotesAPI';
+import {composeComponents} from './src/utils/compose';
 
 const Stack = createNativeStackNavigator();
 const theme = {
@@ -40,27 +42,30 @@ function App() {
     }
   };
 
+  const Providers = composeComponents(OrgJobProvider);
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={setLoggedIn ? 'Login' : 'Login'}>
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <Providers>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={setLoggedIn ? 'Login' : 'Login'}>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </Providers>
   );
 }
 
